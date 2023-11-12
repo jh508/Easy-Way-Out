@@ -2,13 +2,13 @@
 require "ISUI/ISPanel"
 
 -- Create a class for your custom UI panel
-MyCustomUIPanel = ISPanel:derive("MyCustomUIPanel")
+MyCustomUIPanel = ISPanel:derive("Kaleerie's Easy Way Out Confirmation Panel")
 
 
 -- Constructor for your custom panel
 function MyCustomUIPanel:initialise()
     ISPanel.initialise(self)
-    self.title = "Custom UI Panel"
+    self.title = "Easy Way Out Confirmation"
     self.width = 300
     self.height = 200
 
@@ -25,7 +25,6 @@ end
 
 -- Function to handle the first button click
 function MyCustomUIPanel:onButton1Click()
-    print("Killing myself")
     local player = getSpecificPlayer(0)
     player:setHealth(0)
 end
