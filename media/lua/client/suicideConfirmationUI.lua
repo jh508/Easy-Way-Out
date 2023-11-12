@@ -23,7 +23,6 @@ function suicideConfirmationPanel:initialise()
 
     -- Set the visibility to false by default
     self:setVisible(false)
-
 end
 
     -- Create a panel
@@ -44,10 +43,8 @@ end
         panel:setVisible(false)
     end
 
-
     -- Function to open your custom UI panel
     function openCustomUIPanel()
-
         panel:initialise()  -- Call the initialise function to set up the panel
         panel:addToUIManager()
         panel:setVisible(true)
@@ -61,8 +58,6 @@ end
         if isKeyDown(key1) then
             openCustomUIPanel()
         end
-
-
     end
 
 -- Register an event to open your panel (e.g., when the game starts)
