@@ -1,10 +1,8 @@
 
-function OnServerCommand(module, command, arguments)
-    if module == "test" then
-        if command == "command" then
-            print(arguments[1])
-        end
-    end
+local function OnClientCommand(module, command, player, args)
+    local commandSenderSteamID = player:getSteamID()
+
 end
 
-Events.OnServerCommand.Add(OnServerCommand)
+-- Triggered event when the client sends a command to the server
+Events.OnClientCommand.Add(OnClientCommand)
