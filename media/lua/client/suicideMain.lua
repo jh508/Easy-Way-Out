@@ -11,8 +11,14 @@ activateSuicide.denied = false
 -- a function inside the activateSuicide table which checks if the player is holding a weapon
 function activateSuicide.killPlayer()
     local player = getSpecificPlayer(0)
-    if player:getPrimaryHandItem() and player:getPrimaryHandItem():IsWeapon() and player:getPrimaryHandItem():getDisplayCategory() == "Weapon" then
-        player:setHealth(0)
+    local playerPrimaryHandItem = player:getPrimaryHandItem()
+    if playerPrimaryHandItem and playerPrimaryHandItem:IsWeapon() and playerPrimaryHandItem:getDisplayCategory() == "Weapon" then
+        if playerPrimaryHandItem:isAimedFirearm() then
+            
+        else
+            
+        end
+       -- player:setHealth(0)
         activateSuicide.denied = false
     else
         activateSuicide.denied = true
