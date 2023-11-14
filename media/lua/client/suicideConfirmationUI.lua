@@ -4,11 +4,14 @@ require "ISUI/ISPanel"
 -- Create a class for your custom UI panel
 local suicideConfirmationPanel = ISPanel:derive("Kaleerie's Easy Way Out Confirmation Panel")
 
+-- Determines whether or not the user interface panel is open
 local isMenuOpen = false
 
+-- Loading required scripts
 local userStats = require("suicideUserStats")
+local activateSuicide = require("suicideMain")
 
--- Constructor for your custom panel
+-- Constructor for initialising the panel
 function suicideConfirmationPanel:initialise()
     ISPanel.initialise(self)
     self.title = "Easy Way Out Confirmation"
@@ -32,11 +35,9 @@ end
 
 -- Function to handle the first button click
     function suicideConfirmationPanel:onButton1Click()
-        local player = getSpecificPlayer(0)  -- Assuming you're getting the local player
-        player:setHealth(0)
+        activateSuicide.killPlayer()
         closeSuicideConfirmPanel()
     end
-
 
     -- Function to handle the second button click
     function suicideConfirmationPanel:onButton2Click()
@@ -44,13 +45,14 @@ end
         closeSuicideConfirmPanel()
     end
 
+    -- Function for closing the confirmation panel
     function closeSuicideConfirmPanel()
         panel:setVisible(false)
         userStats.deactivatePlayerStats()
         isMenuOpen = false
     end
 
-    -- Function to open your custom UI panel
+    -- Function for opening the confirmation panel
     function openCustomUIPanel()
         panel:initialise()  -- Call the initialise function to set up the panel
         panel:addToUIManager()
@@ -58,7 +60,7 @@ end
         userStats.activatePlayerStats()
     end
 
--- Function to check for the key press and kill the player
+-- Function to check for the key press
     function checkForKeyPress()
         local key1 = 67  -- Key code for the key you want to check (e.g., 67 for "F9")
 
@@ -68,6 +70,5 @@ end
         end
     end
 
-
--- Register an event to open your panel (e.g., when the game starts)
+-- Register an event to check user input
 Events.OnTick.Add(checkForKeyPress)
