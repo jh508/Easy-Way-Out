@@ -35,7 +35,7 @@ function userStats.deactivatePlayerStats()
     local player = getSpecificPlayer(0) 
     local stats = player:getStats()
     stats:setStress(userStats.originalStress)
-    if activateSuicide.denied == false then
+    if activateSuicide.isDenied == false then
     local goodQuote = ZombRand(4) + 1
     player:Say(lovelyQuotes[goodQuote])
     end
