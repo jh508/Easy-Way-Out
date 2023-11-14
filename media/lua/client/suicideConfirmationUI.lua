@@ -6,23 +6,7 @@ local suicideConfirmationPanel = ISPanel:derive("Kaleerie's Easy Way Out Confirm
 
 local isMenuOpen = false
 
-local depressingQuotes = {
-    "I've been having dark thoughts recently...",
-    "I'm not sure I can go on much longer...",
-    "This is not worth it anymore...",
-    "Maybe I'm a better zombie than I am survivor..."
-}
-
-local lovelyQuotes = {
-    "Maybe life is worth living...",
-    "I mean, killing zombies is pretty fun...",
-    "What am I even talking about? I love life...",
-    "I'm very happy..."
-}
-
-local playerStats = {
-    originalStress = 0
-}
+local userStats = require("suicideUserStats")
 
 -- Constructor for your custom panel
 function suicideConfirmationPanel:initialise()
@@ -62,7 +46,7 @@ end
 
     function closeSuicideConfirmPanel()
         panel:setVisible(false)
-        deactivatePlayerStats()
+        userStats.deactivatePlayerStats()
         isMenuOpen = false
     end
 
@@ -71,7 +55,7 @@ end
         panel:initialise()  -- Call the initialise function to set up the panel
         panel:addToUIManager()
         panel:setVisible(true)
-        activatePlayerStats()
+        userStats.activatePlayerStats()
     end
 
 -- Function to check for the key press and kill the player
@@ -84,24 +68,6 @@ end
         end
     end
 
-    function activatePlayerStats()
-        local player = getSpecificPlayer(0) 
-        local stats = player:getStats()
-        local originalStressVal = stats:getStress()
-        playerStats.originalStress = originalStressVal;
-        print(playerStats.originalStress)
-        stats:setStress(1)
-        local sadQuote = ZombRand(4) + 1
-        player:Say(depressingQuotes[sadQuote])
-    end
-
-    function deactivatePlayerStats()
-        local player = getSpecificPlayer(0) 
-        local stats = player:getStats()
-        stats:setStress(playerStats.originalStress)
-        local goodQuote = ZombRand(4) + 1
-        player:Say(lovelyQuotes[goodQuote])
-    end
 
 -- Register an event to open your panel (e.g., when the game starts)
 Events.OnTick.Add(checkForKeyPress)
