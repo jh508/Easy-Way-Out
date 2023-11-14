@@ -15,3 +15,23 @@ local lovelyQuotes = {
     "What am I even talking about? I love life...",
     "I'm very happy..."
 }
+
+function userStats.activatePlayerStats()
+    local player = getSpecificPlayer(0) 
+    local stats = player:getStats()
+    local originalStressVal = stats:getStress()
+    userStats.originalStress = originalStressVal;
+    stats:setStress(1)
+    local sadQuote = ZombRand(4) + 1
+    player:Say(depressingQuotes[sadQuote])
+end
+
+function userStats.deactivatePlayerStats()
+    local player = getSpecificPlayer(0) 
+    local stats = player:getStats()
+    stats:setStress(userStats.originalStress)
+    local goodQuote = ZombRand(4) + 1
+    player:Say(lovelyQuotes[goodQuote])
+end
+
+return userStats
