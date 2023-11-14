@@ -12,9 +12,18 @@ activateSuicide.denied = false
 function activateSuicide.killPlayer()
     local player = getSpecificPlayer(0)
     local playerPrimaryHandItem = player:getPrimaryHandItem()
+    -- Get the sound manager and play the audio "9mmShot" at the players current location
+    getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
+
     if playerPrimaryHandItem and playerPrimaryHandItem:IsWeapon() and playerPrimaryHandItem:getDisplayCategory() == "Weapon" then
         if playerPrimaryHandItem:isAimedFirearm() then
-            
+            if playerPrimaryHandItem:getCurrentAmmoCount() > 0 then
+                addBloodSplat(player:getCurrentSquare(), 200)
+                player:setHealth(0)
+            else
+                player:Say("If I'm going to do this... I'll need a bullet")
+            end
+            print(playerPrimaryHandItem:getAmmoType())
         else
             
         end
