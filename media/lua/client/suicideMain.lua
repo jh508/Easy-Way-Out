@@ -16,7 +16,7 @@ function activateSuicide.killPlayer()
     if playerPrimaryHandItem and playerPrimaryHandItem:IsWeapon() and playerPrimaryHandItem:getDisplayCategory() == "Weapon" then
         if playerPrimaryHandItem:isAimedFirearm() then
             if playerPrimaryHandItem:getCurrentAmmoCount() > 0 then
-                player:getEmitter():playSound("9mmShot")
+                getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
                 addBloodSplat(player:getCurrentSquare(), 200)
                 playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
                 player:setHealth(0)
