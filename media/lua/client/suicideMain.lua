@@ -8,6 +8,13 @@ activateSuicide.deniedQuote = "If only I had a weapon..."
 -- Boolean value to determine whether or not the player can take the easy way out
 activateSuicide.isDenied = true
 
+local function handlePlayerDeath(command, soundFile)
+    local player = getSpecificPlayer(0)
+    addBloodSplat(player:getCurrentSquare(), 200)
+    getSoundManager():PlayWorldSound(soundFile, true, player:getCurrentSquare(), 0, 4, 1, false)
+    player:setHealth(0)
+end
+
 -- a function inside the activateSuicide table which checks if the player is holding a weapon
 function activateSuicide.killPlayer()
     local player = getSpecificPlayer(0)
@@ -36,6 +43,7 @@ function activateSuicide.killPlayer()
             if isClient() then
                 getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
                 addBloodSplat(player:getCurrentSquare(), 200)
+                sendClientCommand("suicideModule", "deathByMelee", {})
                 activateSuicide.isDenied = false
             else
                 getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
@@ -53,15 +61,9 @@ end
 local function OnServerCommand(module, command, arguments)
     if module == "suicideModule" then
         if command == "deathByFireArm" then
-            local player = getSpecificPlayer(0)
-            addBloodSplat(player:getCurrentSquare(), 200)
-            getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
-            player:setHealth(0)
+            handlePlayerDeath(command, "9mmShot")
         elseif command == "deathByMelee" then
-            local player = getSpecificPlayer(0)
-            addBloodSplat(player:getCurrentSquare(), 200)
-            getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
-            player:setHealth(0)
+            handlePlayerDeath(command, "PZ_HeadExtract_01")
         end
     end
 end
