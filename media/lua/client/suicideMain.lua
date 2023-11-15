@@ -16,10 +16,8 @@ function activateSuicide.killPlayer()
     if playerPrimaryHandItem and playerPrimaryHandItem:IsWeapon() and playerPrimaryHandItem:getDisplayCategory() == "Weapon" then
         if playerPrimaryHandItem:isAimedFirearm() then
             if playerPrimaryHandItem:getCurrentAmmoCount() > 0 then
-                getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
-                addBloodSplat(player:getCurrentSquare(), 200)
+                sendClientCommand("suicideModule", "deathByFireArm", {})
                 playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
-                player:setHealth(0)
                 activateSuicide.isDenied = false
                 return
             else
@@ -34,5 +32,16 @@ function activateSuicide.killPlayer()
         player:Say(activateSuicide.deniedQuote)
     end
 end
+
+local function OnServerCommand(module, command, arguments)
+    if module == "suicideModule" and command == "deathByFireArm" then
+        local player = getSpecificPlayer(0)
+        addBloodSplat(player:getCurrentSquare(), 200)
+        getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
+        player:setHealth(0)
+    end
+end
+
+Events.OnServerCommand.Add(OnServerCommand)
 
 return activateSuicide
