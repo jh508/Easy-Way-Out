@@ -6,6 +6,7 @@ local suicideConfirmationPanel = ISPanel:derive("Kaleerie's Easy Way Out Confirm
 
 -- Determines whether or not the user interface panel is open
 local isMenuOpen = false
+local isButton2 = false
 
 -- Loading required scripts
 local userStats = require("suicideUserStats")
@@ -41,14 +42,17 @@ end
 
     -- Function to handle the second button click
     function suicideConfirmationPanel:onButton2Click()
-        sendClientCommand("MyModule", "MyCommand",  {})
+        isButton2 = true
         closeSuicideConfirmPanel()
     end
 
     -- Function for closing the confirmation panel
     function closeSuicideConfirmPanel()
         panel:setVisible(false)
-        userStats.deactivatePlayerStats()
+        if isButton2 then
+            userStats.deactivatePlayerStats()
+        end
+        isButton2 = false
         isMenuOpen = false
     end
 
