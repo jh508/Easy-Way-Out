@@ -31,14 +31,12 @@ end
 
 -- A function added to the userStats table which deactivates the stats added in the previous function when the confirmation panel is closed
 function userStats.deactivatePlayerStats()
-    local activateSuicide = require("suicideMain")
     local player = getSpecificPlayer(0) 
     local stats = player:getStats()
     stats:setStress(userStats.originalStress)
-    if activateSuicide.isDenied == false then
     local goodQuote = ZombRand(4) + 1
     player:Say(lovelyQuotes[goodQuote])
-    end
+    
 end
 
 return userStats
