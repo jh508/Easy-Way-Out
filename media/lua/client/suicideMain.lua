@@ -17,7 +17,6 @@ function activateSuicide.killPlayer()
         if playerPrimaryHandItem:isAimedFirearm() then
             if playerPrimaryHandItem:getCurrentAmmoCount() > 0 then
                 if isClient() then
-                    print("testing")
                     sendClientCommand("suicideModule", "deathByFireArm", {})
                     playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
                     activateSuicide.isDenied = false
@@ -37,7 +36,6 @@ function activateSuicide.killPlayer()
             if isClient() then
                 getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
                 addBloodSplat(player:getCurrentSquare(), 200)
-                print("TESTESTESTESTESTESTESTESTES")
                 activateSuicide.isDenied = false
             else
                 getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
