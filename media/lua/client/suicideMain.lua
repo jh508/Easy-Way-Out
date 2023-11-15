@@ -16,16 +16,35 @@ function activateSuicide.killPlayer()
     if playerPrimaryHandItem and playerPrimaryHandItem:IsWeapon() and playerPrimaryHandItem:getDisplayCategory() == "Weapon" then
         if playerPrimaryHandItem:isAimedFirearm() then
             if playerPrimaryHandItem:getCurrentAmmoCount() > 0 then
-                sendClientCommand("suicideModule", "deathByFireArm", {})
-                playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
-                activateSuicide.isDenied = false
-                return
+                if isClient() then
+                    print("testing")
+                    sendClientCommand("suicideModule", "deathByFireArm", {})
+                    playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
+                    activateSuicide.isDenied = false
+                    return
+                else
+                    addBloodSplat(player:getCurrentSquare(), 200)
+                    getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
+                    playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
+                    player:setHealth(0)
+                    return
+                end
             else
                 player:Say("If I'm going to do this... I'll need a bullet")
             end
-            print(playerPrimaryHandItem:getAmmoType())
         else
-            -- other weapon types
+            -- If TRUE, the player is hosting the server in singleplayer
+            if isClient() then
+                getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
+                addBloodSplat(player:getCurrentSquare(), 200)
+                print("TESTESTESTESTESTESTESTESTES")
+                activateSuicide.isDenied = false
+            else
+                getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
+                addBloodSplat(player:getCurrentSquare(), 200)
+                player:setHealth(0)
+                activateSuicide.isDenied = false
+            end
         end
     else
         activateSuicide.isDenied = true
@@ -34,14 +53,22 @@ function activateSuicide.killPlayer()
 end
 
 local function OnServerCommand(module, command, arguments)
-    if module == "suicideModule" and command == "deathByFireArm" then
-        local player = getSpecificPlayer(0)
-        addBloodSplat(player:getCurrentSquare(), 200)
-        getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
-        player:setHealth(0)
+    if module == "suicideModule" then
+        if command == "deathByFireArm" then
+            local player = getSpecificPlayer(0)
+            addBloodSplat(player:getCurrentSquare(), 200)
+            getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
+            player:setHealth(0)
+        elseif command == "deathByMelee" then
+            local player = getSpecificPlayer(0)
+            addBloodSplat(player:getCurrentSquare(), 200)
+            getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
+            player:setHealth(0)
+        end
     end
 end
 
 Events.OnServerCommand.Add(OnServerCommand)
 
 return activateSuicide
+
