@@ -21,7 +21,7 @@ Welcome to the Project Zomboid Quick Reset Mod! This mod enhances the gameplay e
 3. **Enable the Mod:**
    - Launch Project Zomboid.
    - Navigate to the Mods menu.
-   - Enable the "Kaleery's Quick Reset" from the list.
+   - Enable the "PZ-Quick-Reset" from the list.
 
 4. **In-Game Usage:**
    - Open the confirmation menu in-game using F9
