@@ -2,29 +2,28 @@
 require "ISUI/ISPanel"
 
 -- Create a class for your custom UI panel
-local suicideConfirmationPanel = ISPanel:derive("Kaleerie's Easy Way Out Confirmation Panel")
+local quickResetConfirmationPanel = ISPanel:derive("Kaleerie's Easy Way Out Confirmation Panel")
 
 -- Determines whether or not the user interface panel is open
 local isMenuOpen = false
 local isButton2 = false
-
 -- Loading required scripts
-local userStats = require("suicideUserStats")
-local activateSuicide = require("suicideMain")
+local userStats = require("quickResetUserStats")
+local activateQuickReset = require("quickResetMain")
 
 -- Constructor for initialising the panel
-function suicideConfirmationPanel:initialise()
+function quickResetConfirmationPanel:initialise()
     ISPanel.initialise(self)
     self.title = "Easy Way Out Confirmation"
     self.width = 300
     self.height = 200
 
     -- Create the first button
-    self.button1 = ISButton:new(50, 50, 200, 40, "Yes", self, suicideConfirmationPanel.onButton1Click)
+    self.button1 = ISButton:new(50, 50, 200, 40, "Yes", self, quickResetConfirmationPanel.onButton1Click)
     self:addChild(self.button1)
     
     -- Create the second button
-    self.button2 = ISButton:new(50, 100, 200, 40, "No", self, suicideConfirmationPanel.onButton2Click)
+    self.button2 = ISButton:new(50, 100, 200, 40, "No", self, quickResetConfirmationPanel.onButton2Click)
     self:addChild(self.button2)
 
     -- Set the visibility to false by default
@@ -32,27 +31,32 @@ function suicideConfirmationPanel:initialise()
 end
 
     -- Create a panel
-   local panel = suicideConfirmationPanel:new(100, 100, 300, 200)
+   local panel = quickResetConfirmationPanel:new(100, 100, 300, 200)
 
 -- Function to handle the first button click
-    function suicideConfirmationPanel:onButton1Click()
-        activateSuicide.killPlayer()
-        closeSuicideConfirmPanel()
+    function quickResetConfirmationPanel:onButton1Click()
+        activateQuickReset.killPlayer()
+        closeConfirmationPanel()
+        isButton2 = false
     end
 
     -- Function to handle the second button click
-    function suicideConfirmationPanel:onButton2Click()
+    function quickResetConfirmationPanel:onButton2Click()
         isButton2 = true
-        closeSuicideConfirmPanel()
+        closeConfirmationPanel()
     end
 
     -- Function for closing the confirmation panel
-    function closeSuicideConfirmPanel()
+    function closeConfirmationPanel()
         panel:setVisible(false)
-        if isButton2 then
-            userStats.deactivatePlayerStats()
-        end
-        isButton2 = false
+            if isButton2 == true then
+                userStats.deactivatePlayerStats()
+                userStats.activatePlayerQuote()
+            end
+
+            if activateQuickReset.isDenied == true then
+                userStats.deactivatePlayerStats()
+            end
         isMenuOpen = false
     end
 
