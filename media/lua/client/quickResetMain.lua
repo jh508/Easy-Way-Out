@@ -8,6 +8,9 @@ activateQuickReset.deniedQuote = "If only I had a weapon..."
 -- Boolean value to determine whether or not the player can take the easy way out
 activateQuickReset.isDenied = true
 
+-- Player quotes
+local playerNeedBullet = "If I'm going to do this... I'll need a bullet"
+
 -- Module and Command variables
 local moduleName = "resetModule"
 local deathByFireArmCommand = "deathByFireArm"
@@ -48,7 +51,7 @@ function activateQuickReset.killPlayer()
                     return
                 end
             else
-                player:Say("If I'm going to do this... I'll need a bullet")
+                player:Say(playerNeedBullet)
             end
         else
             -- If TRUE, the player is hosting the server in multiplayer
