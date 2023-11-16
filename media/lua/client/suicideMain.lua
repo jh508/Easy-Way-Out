@@ -8,6 +8,10 @@ activateSuicide.deniedQuote = "If only I had a weapon..."
 -- Boolean value to determine whether or not the player can take the easy way out
 activateSuicide.isDenied = true
 
+-- Sound variables
+local deathByFireArmSound = "9mmShot"
+local deathByMeleeSound = "PZ_HeadExtract_01"
+
 local function handlePlayerDeath(command, soundFile)
     local player = getSpecificPlayer(0)
     addBloodSplat(player:getCurrentSquare(), 200)
@@ -30,7 +34,7 @@ function activateSuicide.killPlayer()
                     return
                 else
                     addBloodSplat(player:getCurrentSquare(), 200)
-                    getSoundManager():PlayWorldSound("9mmShot", true, player:getCurrentSquare(), 0, 4, 1, false)
+                    getSoundManager():PlayWorldSound(deathByFireArmSound, true, player:getCurrentSquare(), 0, 4, 1, false)
                     playerPrimaryHandItem:setCurrentAmmoCount(playerPrimaryHandItem:getCurrentAmmoCount() - 1)
                     player:setHealth(0)
                     return
@@ -41,12 +45,12 @@ function activateSuicide.killPlayer()
         else
             -- If TRUE, the player is hosting the server in singleplayer
             if isClient() then
-                getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
+                getSoundManager():PlayWorldSound(deathByMeleeSound, true, player:getCurrentSquare(), 0, 4, 1, false)
                 addBloodSplat(player:getCurrentSquare(), 200)
                 sendClientCommand("suicideModule", "deathByMelee", {})
                 activateSuicide.isDenied = false
             else
-                getSoundManager():PlayWorldSound("PZ_HeadExtract_01", true, player:getCurrentSquare(), 0, 4, 1, false)
+                getSoundManager():PlayWorldSound(deathByMeleeSound, true, player:getCurrentSquare(), 0, 4, 1, false)
                 addBloodSplat(player:getCurrentSquare(), 200)
                 player:setHealth(0)
                 activateSuicide.isDenied = false
@@ -59,11 +63,14 @@ function activateSuicide.killPlayer()
 end
 
 local function OnServerCommand(module, command, arguments)
+    local player = getSpecificPlayer(0)
+    local playerOnlineID = player:getOnlineID()
+
     if module == "suicideModule" then
-        if command == "deathByFireArm" then
-            handlePlayerDeath(command, "9mmShot")
-        elseif command == "deathByMelee" then
-            handlePlayerDeath(command, "PZ_HeadExtract_01")
+        if command == "deathByFireArm" and playerOnlineID == arguments[1] then
+            handlePlayerDeath(command, deathByFireArmSound)
+        elseif command == "deathByMelee" and playerOnlineID == arguments[1] then
+            handlePlayerDeath(command, deathByMeleeSound)
         end
     end
 end
