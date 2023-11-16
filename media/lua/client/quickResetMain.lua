@@ -20,7 +20,7 @@ local deathByMeleeSound = "PZ_HeadExtract_01"
 local function handlePlayerDeath(command, soundFile, onlineID, xPos, yPos, zPos)
     local player = getSpecificPlayer(0)
     addBloodSplat(getSquare(xPos, yPos, zPos), 200)
-    getSoundManager():PlayWorldSound(soundFile, true, getSquare(xPos, yPos, zPos), 0, 4, 1, false)
+    getSoundManager():PlayWorldSound(soundFile, true, getSquare(xPos, yPos, zPos), 0, 30, 1, false)
     if player:getOnlineID() == onlineID then
         player:setHealth(0)
     end
