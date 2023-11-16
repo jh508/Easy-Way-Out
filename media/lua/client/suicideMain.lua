@@ -12,11 +12,13 @@ activateSuicide.isDenied = true
 local deathByFireArmSound = "9mmShot"
 local deathByMeleeSound = "PZ_HeadExtract_01"
 
-local function handlePlayerDeath(command, soundFile)
+local function handlePlayerDeath(command, soundFile, onlineID)
     local player = getSpecificPlayer(0)
     addBloodSplat(player:getCurrentSquare(), 200)
     getSoundManager():PlayWorldSound(soundFile, true, player:getCurrentSquare(), 0, 4, 1, false)
-    player:setHealth(0)
+    if player:getOnlineID() == onlineID then
+        player:setHealth(0)
+    end
 end
 
 -- a function inside the activateSuicide table which checks if the player is holding a weapon
@@ -63,14 +65,11 @@ function activateSuicide.killPlayer()
 end
 
 local function OnServerCommand(module, command, arguments)
-    local player = getSpecificPlayer(0)
-    local playerOnlineID = player:getOnlineID()
-
     if module == "suicideModule" then
-        if command == "deathByFireArm" and playerOnlineID == arguments[1] then
-            handlePlayerDeath(command, deathByFireArmSound)
-        elseif command == "deathByMelee" and playerOnlineID == arguments[1] then
-            handlePlayerDeath(command, deathByMeleeSound)
+        if command == "deathByFireArm" then
+            handlePlayerDeath(command, deathByFireArmSound, arguments[1])
+        elseif command == "deathByMelee" then
+            handlePlayerDeath(command, deathByMeleeSound, arguments[1])
         end
     end
 end
