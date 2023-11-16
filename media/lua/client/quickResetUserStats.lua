@@ -29,14 +29,17 @@ function userStats.activatePlayerStats()
     player:Say(depressingQuotes[sadQuote])
 end
 
+function userStats.activatePlayerQuote()
+    local player = getSpecificPlayer(0) 
+    local goodQuote = ZombRand(4) + 1
+    player:Say(lovelyQuotes[goodQuote])
+end
+
 -- A function added to the userStats table which deactivates the stats added in the previous function when the confirmation panel is closed
 function userStats.deactivatePlayerStats()
     local player = getSpecificPlayer(0) 
     local stats = player:getStats()
     stats:setStress(userStats.originalStress)
-    local goodQuote = ZombRand(4) + 1
-    player:Say(lovelyQuotes[goodQuote])
-    
 end
 
 return userStats
