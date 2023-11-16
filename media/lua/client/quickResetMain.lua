@@ -20,6 +20,7 @@ local deathByMeleeCommand = "deathByMelee"
 local deathByFireArmSound = "9mmShot"
 local deathByMeleeSound = "PZ_HeadExtract_01"
 
+-- Function for handling the player death on multiplayer
 local function handlePlayerDeath(command, soundFile, onlineID, xPos, yPos, zPos)
     local player = getSpecificPlayer(0)
     addBloodSplat(getSquare(xPos, yPos, zPos), 200)
