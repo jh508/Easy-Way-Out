@@ -1,5 +1,3 @@
--- quickResetMain.lua
-
 -- table instantiation to be accessed from other scripts
 local activateQuickReset = {}
 
