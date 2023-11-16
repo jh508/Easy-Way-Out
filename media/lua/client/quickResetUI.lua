@@ -36,8 +36,8 @@ end
 -- Function to handle the first button click
     function quickResetConfirmationPanel:onButton1Click()
         activateQuickReset.killPlayer()
-        closeConfirmationPanel()
         isButton2 = false
+        closeConfirmationPanel()
     end
 
     -- Function to handle the second button click
